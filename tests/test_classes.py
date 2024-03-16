@@ -38,3 +38,12 @@ def test_product_init(product):
 
     product.price = -123
     assert product.price == 50000
+
+    assert product.add_product(
+        {"name": "Наушники", "description": "Норм звук", "price": 1500.0, "quantity": 2}).name == "Наушники"
+    assert product.add_product(
+        {"name": "Наушники", "description": "Норм звук", "price": 1500.0, "quantity": 3}).description == "Норм звук"
+    assert product.add_product(
+        {"name": "Наушники", "description": "Норм звук", "price": 1500.0, "quantity": 4}).price == 1500.0
+    assert product.add_product(
+        {"name": "Наушники", "description": "Норм звук", "price": 1500.0, "quantity": 2}).quantity == 11

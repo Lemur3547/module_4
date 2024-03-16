@@ -13,14 +13,16 @@ class Category:
 
     # @property
     def add_product(self, product):
-        self._products.append(product)
+        if product not in self._products:
+            self._products.append(product)
         return self._products
 
     @property
     def get_products(self):
         products_list = []
         for product in self._products:
-            products_list.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.")
+            if product not in products_list:
+                products_list.append(f"{product.name}, {product._price} руб. Остаток: {product.quantity} шт.")
         return products_list
 
 
@@ -30,6 +32,8 @@ class Product:
     price: float
     quantity: int
 
+    __products = []
+
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
@@ -37,14 +41,29 @@ class Product:
         self.quantity = quantity
 
     @classmethod
-    def add_product(cls, product, products):
-        for i in products:
-            if product["name"] == i.name or product["description"] == i.description:
-                cls.quantity += i["quantity"]
-                if product["price"] > cls.price:
-                    cls.price = product["price"]
-                return
-            return Product(product["name"], product["description"], product["price"], product["quantity"])
+    def add_product(cls, product):
+        pr = cls(product["name"], product["description"], product["price"], product["quantity"])
+
+
+        for i in cls.__products:
+            if i.name == pr.name:
+                i.quantity += pr.quantity
+                i._price = max(i._price, pr._price)
+                return i
+        cls.__products.append(pr)
+        return pr
+
+    # @classmethod
+    # def add_product(cls, product, products):
+    #     for i in products:
+    #         if product["name"] == i.name or product["description"] == i.description:
+    #             quantity = product["quantity"] + i.quantity
+    #             if product["price"] > i.price:
+    #                 price = product["price"]
+    #             else:
+    #                 price = i.price
+    #             return cls(product["name"], product["description"], price, quantity)
+    #     return cls(product["name"], product["description"], product["price"], product["quantity"])
 
     @property
     def price(self):
