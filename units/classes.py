@@ -11,6 +11,19 @@ class Category:
         self._products = products
         self.quantity_unique_products = len(products)
 
+    def __len__(self):
+        """
+        Функция для подсчета количества товара на складе в данной категории
+        :return: Количество товара
+        """
+        count = 0
+        for i in self._products:
+            count += i.quantity
+        return count
+
+    def __str__(self):
+        return f'{self.name}, количество продуктов: {len(self)} шт.'
+
     # @property
     def add_product(self, product):
         if product not in self._products:
@@ -22,7 +35,7 @@ class Category:
         products_list = []
         for product in self._products:
             if product not in products_list:
-                products_list.append(f"{product.name}, {product._price} руб. Остаток: {product.quantity} шт.")
+                products_list.append(str(product))
         return products_list
 
 
@@ -40,10 +53,15 @@ class Product:
         self._price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f'{self.name}, {self._price} руб. Остаток: {self.quantity} шт.'
+
+    def __add__(self, other):
+        return (self._price * self.quantity) + (other._price * other.quantity)
+
     @classmethod
     def add_product(cls, product):
         pr = cls(product["name"], product["description"], product["price"], product["quantity"])
-
 
         for i in cls.__products:
             if i.name == pr.name:
@@ -52,18 +70,6 @@ class Product:
                 return i
         cls.__products.append(pr)
         return pr
-
-    # @classmethod
-    # def add_product(cls, product, products):
-    #     for i in products:
-    #         if product["name"] == i.name or product["description"] == i.description:
-    #             quantity = product["quantity"] + i.quantity
-    #             if product["price"] > i.price:
-    #                 price = product["price"]
-    #             else:
-    #                 price = i.price
-    #             return cls(product["name"], product["description"], price, quantity)
-    #     return cls(product["name"], product["description"], product["price"], product["quantity"])
 
     @property
     def price(self):
@@ -82,3 +88,21 @@ class Product:
                 print("Отмена")
         else:
             print("Введена некорректная цена")
+
+
+class ProductIteration:
+    category: list
+
+    def __init__(self, category):
+        self.category = category
+
+    def __iter__(self):
+        self.current_value = -1
+        return self
+
+    def __next__(self):
+        self.current_value += 1
+        if self.current_value < len(self.category):
+            return self.category[self.current_value]
+        else:
+            raise StopIteration
