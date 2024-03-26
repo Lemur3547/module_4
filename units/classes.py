@@ -1,4 +1,5 @@
 class Category:
+    """Класс для категорий"""
     name: str
     description: str
     _products: list
@@ -26,12 +27,23 @@ class Category:
 
     # @property
     def add_product(self, product):
-        if product not in self._products:
-            self._products.append(product)
-        return self._products
+        """
+        Метод для добавления нового товара в список товаров категории
+        :param product: Добавляемый товар
+        :return: Список товаров включающий новый товар
+        """
+        if isinstance(product, Product):
+            if product not in self._products:
+                self._products.append(product)
+            return self._products
+        raise ValueError("Добавляемое значение не является экземпляром класса Product или его наследником")
 
     @property
     def get_products(self):
+        """
+        Метод для представления списка товаров в виде "<Товар>, <Цена> руб. Остаток: <Остаток> шт."
+        :return: список товаров
+        """
         products_list = []
         for product in self._products:
             if product not in products_list:
@@ -40,6 +52,7 @@ class Category:
 
 
 class Product:
+    """Класс для товаров"""
     name: str
     description: str
     price: float
@@ -57,11 +70,13 @@ class Product:
         return f'{self.name}, {self._price} руб. Остаток: {self.quantity} шт.'
 
     def __add__(self, other):
-        return (self._price * self.quantity) + (other._price * other.quantity)
+        if type(self) == type(other):
+            return (self._price * self.quantity) + (other._price * other.quantity)
+        raise ValueError("Нельзя складывать товары из разных категорий")
 
     @classmethod
     def add_product(cls, product):
-        pr = cls(product["name"], product["description"], product["price"], product["quantity"])
+        pr = cls(**product)
 
         for i in cls.__products:
             if i.name == pr.name:
@@ -90,7 +105,29 @@ class Product:
             print("Введена некорректная цена")
 
 
+class Smartphone(Product):
+    """Класс для смартфонов"""
+
+    def __init__(self, name, description, price, quantity, productivity, model, storage, color):
+        super().__init__(name, description, price, quantity)
+        self.productivity = productivity
+        self.model = model
+        self.storage = storage
+        self.color = color
+
+
+class Grass(Product):
+    """Класс для травы"""
+
+    def __init__(self, name, description, price, quantity, country_of_production, germination_time, color):
+        super().__init__(name, description, price, quantity)
+        self.country_of_production = country_of_production
+        self.germination_time = germination_time
+        self.color = color
+
+
 class ProductIteration:
+    """Класс для итерации по списку продуктов"""
     category: list
 
     def __init__(self, category):
