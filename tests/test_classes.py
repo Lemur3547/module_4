@@ -1,6 +1,6 @@
 import pytest
 
-from units.classes import Category, Product, ProductIteration
+from units.classes import Category, Product, ProductIteration, Smartphone, Grass
 
 
 @pytest.fixture()
@@ -20,6 +20,43 @@ def test_category_init(category_technics):
                                               'Компьютер, 999000.0 руб. Остаток: 3 шт.']
     assert len(category_technics) == 10
     assert str(category_technics) == 'Техника, количество продуктов: 10 шт.'
+
+
+def test_category_add(category_technics):
+    with pytest.raises(ValueError):
+        category_technics.add_product("что то")
+
+    assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
+                                              'Компьютер, 999000.0 руб. Остаток: 3 шт.']
+
+    category_technics.add_product(Product("Продукт", "какой то", 1234.0, 2))
+    assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
+                                              'Компьютер, 999000.0 руб. Остаток: 3 шт.',
+                                              'Продукт, 1234.0 руб. Остаток: 2 шт.']
+
+    category_technics.add_product(Smartphone("Смартфон", "Сусный", 45000.0,
+                                             4, 3.3, "193JCX", 16, "Black"))
+    assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
+                                              'Компьютер, 999000.0 руб. Остаток: 3 шт.',
+                                              'Продукт, 1234.0 руб. Остаток: 2 шт.',
+                                              'Смартфон, 45000.0 руб. Остаток: 4 шт.']
+
+    with pytest.raises(ValueError):
+        category_technics.add_product("что то")
+
+    assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
+                                              'Компьютер, 999000.0 руб. Остаток: 3 шт.',
+                                              'Продукт, 1234.0 руб. Остаток: 2 шт.',
+                                              'Смартфон, 45000.0 руб. Остаток: 4 шт.']
+
+    category_technics.add_product(Grass("Трава газонная", "Мягкая", 1499.99, 5,
+                                        "Poland", "1 мес.", "Зеленая",))
+
+    assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
+                                              'Компьютер, 999000.0 руб. Остаток: 3 шт.',
+                                              'Продукт, 1234.0 руб. Остаток: 2 шт.',
+                                              'Смартфон, 45000.0 руб. Остаток: 4 шт.',
+                                              'Трава газонная, 1499.99 руб. Остаток: 5 шт.']
 
 
 @pytest.fixture()
@@ -52,8 +89,12 @@ def test_product_add_product(product):
 
 
 def test_product_add(product):
-    product2 = Product("Телефон", "Работает", 15990.0, 5)
+    product2 = Product("Телевизор", "Цветной", 15990.0, 5)
     assert product + product2 == 226920.0
+
+    product3 = Smartphone("Телефон", "Работает", 15990.0, 5, 3.3, "19H-43J", 64, "Blue")
+    with pytest.raises(ValueError):
+        product + product3
 
 
 @pytest.fixture()
