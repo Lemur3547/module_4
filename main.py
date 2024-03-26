@@ -3,8 +3,8 @@ from units.read_json import read_json
 
 products_list = read_json()
 
-print(str(products_list[1]))
-
+# print(str(products_list[1]))
+#
 products_list[1].add_product(Product.add_product({"name": "Советский", "description": "Может быть работает",
                                                   "price": 1500.0, "quantity": 2}))
 products_list[1].add_product(Product.add_product({"name": "новый", "description": "Может быть работает",
@@ -13,14 +13,14 @@ products_list[1].add_product(Product.add_product({"name": "Советский", 
                                                   "price": 1100.0, "quantity": 3}))
 products_list[1].add_product(Product.add_product({"name": "новый", "description": "Может быть работает",
                                                   "price": 1500.0, "quantity": 1}))
-for i in products_list[1].get_products:
-    print(i)
-
-print(len(products_list[1]))
-
-new = products_list[1]._products[1] + products_list[1]._products[2]
-
-print(new)
+# for i in products_list[1].get_products:
+#     print(i)
+#
+# print(len(products_list[1]))
+#
+# new = products_list[1]._products[1] + products_list[1]._products[2]
+#
+# print(new)
 
 tvs = ProductIteration(products_list[1]._products)
 print(list(tvs))
