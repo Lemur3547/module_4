@@ -1,6 +1,6 @@
 import pytest
 
-from units.classes import Category, Product, ProductIteration, Smartphone, Grass
+from units.classes import Category, Product, ProductIteration, Smartphone, Grass, Order
 
 
 @pytest.fixture()
@@ -50,13 +50,17 @@ def test_category_add(category_technics):
                                               'Смартфон, 45000.0 руб. Остаток: 4 шт.']
 
     category_technics.add_product(Grass("Трава газонная", "Мягкая", 1499.99, 5,
-                                        "Poland", "1 мес.", "Зеленая",))
+                                        "Poland", "1 мес.", "Зеленая", ))
 
     assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
                                               'Компьютер, 999000.0 руб. Остаток: 3 шт.',
                                               'Продукт, 1234.0 руб. Остаток: 2 шт.',
                                               'Смартфон, 45000.0 руб. Остаток: 4 шт.',
                                               'Трава газонная, 1499.99 руб. Остаток: 5 шт.']
+
+    assert repr(category_technics._products[2]) == "Создан объект Product('Продукт', 'какой то', 1234.0, 2)"
+    assert repr(category_technics._products[3]) == "Создан объект Smartphone('Смартфон', 'Сусный', 45000.0, 4)"
+    assert repr(category_technics._products[4]) == "Создан объект Grass('Трава газонная', 'Мягкая', 1499.99, 5)"
 
 
 @pytest.fixture()
@@ -86,6 +90,13 @@ def test_product_add_product(product):
     assert new_product.description == "Норм звук"
     assert new_product.price == 1600.0
     assert new_product.quantity == 6
+
+
+def test_order(product):
+    my_order = Order(product, 3)
+    assert my_order.product == product
+    assert my_order.quantity == 3
+    assert my_order.final_price == 146970.00
 
 
 def test_product_add(product):
