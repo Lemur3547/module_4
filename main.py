@@ -1,4 +1,4 @@
-from units.classes import Product, ProductIteration
+from units.classes import Product, ProductIteration, Smartphone, Grass, Order
 from units.read_json import read_json
 
 products_list = read_json()
@@ -22,13 +22,13 @@ products_list[1].add_product(Product.add_product({"name": "новый", "descrip
 #
 # print(new)
 
-tvs = ProductIteration(products_list[1]._products)
-print(list(tvs))
-
-for i in tvs:
-    print(i)
-
-print(str(products_list[1]))
+# tvs = ProductIteration(products_list[1]._products)
+# print(list(tvs))
+#
+# for i in tvs:
+#     print(i)
+#
+# print(str(products_list[1]))
 
 # products_list[0].add_product(Product.add_product({}, 12, 3))
 #
@@ -41,3 +41,18 @@ print(str(products_list[1]))
 # products_list[1]._products[1].price = 4000
 #
 # print(products_list[1]._products[1]._price)
+
+
+new = Product("asas", "asasa", 12, 2)
+smartphone = Smartphone("AininyA", "SusakskiE", 39990.00, 7, 31, "12-931JK", 64, "green")
+grass = Grass("Трава", "Красивая", 1200.00, 12, "Румыния", "15 дней", "Зеленая")
+
+# print(repr(new))
+# print(repr(smartphone))
+# print(repr(grass))
+
+# new_order = Order(products_list[0]._products[1], 3)
+#
+# print(new_order.product)
+# print(new_order.quantity)
+# print(new_order.final_price)

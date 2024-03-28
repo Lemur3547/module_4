@@ -1,4 +1,13 @@
-class Category:
+from abc import ABC, abstractmethod
+
+
+class AbstractCategory(ABC):
+    @abstractmethod
+    def __init__(self):
+        pass
+
+
+class Category(AbstractCategory):
     """Класс для категорий"""
     name: str
     description: str
@@ -51,7 +60,28 @@ class Category:
         return products_list
 
 
-class Product:
+class Order(AbstractCategory):
+    def __init__(self, product, quantity):
+        self.product = product
+        self.quantity = quantity
+        self.final_price = product._price * quantity
+
+
+class AbstractProduct(ABC):
+    @abstractmethod
+    def __init__(self):
+        pass
+
+
+class MixinLog:
+    """Класс миксинов"""
+
+    def __repr__(self):
+        return (f"Создан объект {self.__class__.__name__}('{self.name}', '{self.description}', "
+                f"{self._price}, {self.quantity})")
+
+
+class Product(AbstractProduct, MixinLog):
     """Класс для товаров"""
     name: str
     description: str
@@ -65,6 +95,7 @@ class Product:
         self.description = description
         self._price = price
         self.quantity = quantity
+        print(repr(self))
 
     def __str__(self):
         return f'{self.name}, {self._price} руб. Остаток: {self.quantity} шт.'
@@ -105,7 +136,7 @@ class Product:
             print("Введена некорректная цена")
 
 
-class Smartphone(Product):
+class Smartphone(Product, MixinLog):
     """Класс для смартфонов"""
 
     def __init__(self, name, description, price, quantity, productivity, model, storage, color):
@@ -116,7 +147,7 @@ class Smartphone(Product):
         self.color = color
 
 
-class Grass(Product):
+class Grass(Product, MixinLog):
     """Класс для травы"""
 
     def __init__(self, name, description, price, quantity, country_of_production, germination_time, color):
