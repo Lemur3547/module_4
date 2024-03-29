@@ -72,13 +72,17 @@ class AbstractProduct(ABC):
     def __init__(self):
         pass
 
+    @classmethod
+    def add_product(cls, product):
+        pass
+
 
 class MixinLog:
     """Класс миксинов"""
 
     def __repr__(self):
-        return (f"Создан объект {self.__class__.__name__}('{self.name}', '{self.description}', "
-                f"{self._price}, {self.quantity})")
+        attributes = [f"{k}={repr(v)}" for k, v in self.__dict__.items()]
+        return f"Создан объект {self.__class__.__name__}({', '.join(attributes)})"
 
 
 class Product(AbstractProduct, MixinLog):
@@ -95,7 +99,8 @@ class Product(AbstractProduct, MixinLog):
         self.description = description
         self._price = price
         self.quantity = quantity
-        print(repr(self))
+        if self.__class__.__name__ == "Product":
+            print(repr(self))
 
     def __str__(self):
         return f'{self.name}, {self._price} руб. Остаток: {self.quantity} шт.'
@@ -145,6 +150,7 @@ class Smartphone(Product, MixinLog):
         self.model = model
         self.storage = storage
         self.color = color
+        print(repr(self))
 
 
 class Grass(Product, MixinLog):
@@ -155,6 +161,7 @@ class Grass(Product, MixinLog):
         self.country_of_production = country_of_production
         self.germination_time = germination_time
         self.color = color
+        print(repr(self))
 
 
 class ProductIteration:

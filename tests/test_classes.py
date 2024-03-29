@@ -58,9 +58,14 @@ def test_category_add(category_technics):
                                               'Смартфон, 45000.0 руб. Остаток: 4 шт.',
                                               'Трава газонная, 1499.99 руб. Остаток: 5 шт.']
 
-    assert repr(category_technics._products[2]) == "Создан объект Product('Продукт', 'какой то', 1234.0, 2)"
-    assert repr(category_technics._products[3]) == "Создан объект Smartphone('Смартфон', 'Сусный', 45000.0, 4)"
-    assert repr(category_technics._products[4]) == "Создан объект Grass('Трава газонная', 'Мягкая', 1499.99, 5)"
+    assert repr(category_technics._products[2]) == ("Создан объект Product(name='Продукт', description='какой то', "
+                                                    "_price=1234.0, quantity=2)")
+    assert repr(category_technics._products[3]) == ("Создан объект Smartphone(name='Смартфон', description='Сусный', "
+                                                    "_price=45000.0, quantity=4, productivity=3.3, model='193JCX', "
+                                                    "storage=16, color='Black')")
+    assert repr(category_technics._products[4]) == ("Создан объект Grass(name='Трава газонная', description='Мягкая', "
+                                                    "_price=1499.99, quantity=5, country_of_production='Poland', "
+                                                    "germination_time='1 мес.', color='Зеленая')")
 
 
 @pytest.fixture()
