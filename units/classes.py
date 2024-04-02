@@ -59,6 +59,13 @@ class Category(AbstractCategory):
                 products_list.append(str(product))
         return products_list
 
+    def avg_price(self):
+        try:
+            avg_price = round(sum([i._price for i in self._products])/len(self._products), 2)
+            return avg_price
+        except ZeroDivisionError:
+            return 0
+
 
 class Order(AbstractCategory):
     def __init__(self, product, quantity):

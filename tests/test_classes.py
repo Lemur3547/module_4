@@ -68,6 +68,11 @@ def test_category_add(category_technics):
                                                     "germination_time='1 мес.', color='Зеленая')")
 
 
+def test_avg_price():
+    category = Category("sus", "atata", [])
+    assert category.avg_price() == 0
+
+
 @pytest.fixture()
 def product():
     return Product("Компьютер", "Игровой пк без видеокарты", 48990.0, 3)
