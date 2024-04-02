@@ -113,14 +113,15 @@ class Product(AbstractProduct, MixinLog):
     @classmethod
     def add_product(cls, product):
         pr = cls(**product)
-
-        for i in cls.__products:
-            if i.name == pr.name:
-                i.quantity += pr.quantity
-                i._price = max(i._price, pr._price)
-                return i
-        cls.__products.append(pr)
-        return pr
+        if pr.quantity > 0:
+            for i in cls.__products:
+                if i.name == pr.name:
+                    i.quantity += pr.quantity
+                    i._price = max(i._price, pr._price)
+                    return i
+            cls.__products.append(pr)
+            return pr
+        raise ValueError("Невозможно добавить товар, количество которого менее 1")
 
     @property
     def price(self):

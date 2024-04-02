@@ -96,6 +96,9 @@ def test_product_add_product(product):
     assert new_product.price == 1600.0
     assert new_product.quantity == 6
 
+    with pytest.raises(ValueError):
+        product.add_product({"name": "Наушники", "description": "Норм звук", "price": 1600.0, "quantity": -4})
+
 
 def test_order(product):
     my_order = Order(product, 3)
