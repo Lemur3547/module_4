@@ -23,8 +23,11 @@ def test_category_init(category_technics):
 
 
 def test_category_add(category_technics):
-    with pytest.raises(ValueError):
-        category_technics.add_product("что то")
+
+    assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
+                                              'Компьютер, 999000.0 руб. Остаток: 3 шт.']
+
+    category_technics.add_product("что то")
 
     assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
                                               'Компьютер, 999000.0 руб. Остаток: 3 шт.']
@@ -41,8 +44,8 @@ def test_category_add(category_technics):
                                               'Продукт, 1234.0 руб. Остаток: 2 шт.',
                                               'Смартфон, 45000.0 руб. Остаток: 4 шт.']
 
-    with pytest.raises(ValueError):
-        category_technics.add_product("что то")
+    # with pytest.raises(ValueError):
+    #     category_technics.add_product("что то")
 
     assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
                                               'Компьютер, 999000.0 руб. Остаток: 3 шт.',
@@ -58,9 +61,20 @@ def test_category_add(category_technics):
                                               'Смартфон, 45000.0 руб. Остаток: 4 шт.',
                                               'Трава газонная, 1499.99 руб. Остаток: 5 шт.']
 
-    assert repr(category_technics._products[2]) == "Создан объект Product('Продукт', 'какой то', 1234.0, 2)"
-    assert repr(category_technics._products[3]) == "Создан объект Smartphone('Смартфон', 'Сусный', 45000.0, 4)"
-    assert repr(category_technics._products[4]) == "Создан объект Grass('Трава газонная', 'Мягкая', 1499.99, 5)"
+    assert repr(category_technics._products[2]) == ("Создан объект Product(name='Продукт', description='какой то', "
+                                                    "_price=1234.0, quantity=2)")
+    assert repr(category_technics._products[3]) == ("Создан объект Smartphone(name='Смартфон', description='Сусный', "
+                                                    "_price=45000.0, quantity=4, productivity=3.3, model='193JCX', "
+                                                    "storage=16, color='Black')")
+    assert repr(category_technics._products[4]) == ("Создан объект Grass(name='Трава газонная', description='Мягкая', "
+                                                    "_price=1499.99, quantity=5, country_of_production='Poland', "
+                                                    "germination_time='1 мес.', color='Зеленая')")
+
+
+def test_avg_price(category_technics):
+    assert category_technics.avg_price() == 561000
+    category = Category("sus", "atata", [])
+    assert category.avg_price() == 0
 
 
 @pytest.fixture()
@@ -91,12 +105,19 @@ def test_product_add_product(product):
     assert new_product.price == 1600.0
     assert new_product.quantity == 6
 
+    # with pytest.raises(ZeroProductQuantity):
+    #     product.add_product({"name": "Наушники", "description": "Норм звук", "price": 1600.0, "quantity": -4})
+    assert product.add_product(
+        {"name": "Наушники", "description": "Норм звук", "price": 1600.0, "quantity": -4}) is None
+
 
 def test_order(product):
     my_order = Order(product, 3)
     assert my_order.product == product
     assert my_order.quantity == 3
     assert my_order.final_price == 146970.00
+
+    empty_order = Order(product, 0)
 
 
 def test_product_add(product):
