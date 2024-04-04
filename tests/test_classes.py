@@ -23,8 +23,11 @@ def test_category_init(category_technics):
 
 
 def test_category_add(category_technics):
-    with pytest.raises(ValueError):
-        category_technics.add_product("что то")
+
+    assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
+                                              'Компьютер, 999000.0 руб. Остаток: 3 шт.']
+
+    category_technics.add_product("что то")
 
     assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
                                               'Компьютер, 999000.0 руб. Остаток: 3 шт.']
@@ -41,8 +44,8 @@ def test_category_add(category_technics):
                                               'Продукт, 1234.0 руб. Остаток: 2 шт.',
                                               'Смартфон, 45000.0 руб. Остаток: 4 шт.']
 
-    with pytest.raises(ValueError):
-        category_technics.add_product("что то")
+    # with pytest.raises(ValueError):
+    #     category_technics.add_product("что то")
 
     assert category_technics.get_products == ['Телевизор, 123000.0 руб. Остаток: 7 шт.',
                                               'Компьютер, 999000.0 руб. Остаток: 3 шт.',
@@ -68,7 +71,8 @@ def test_category_add(category_technics):
                                                     "germination_time='1 мес.', color='Зеленая')")
 
 
-def test_avg_price():
+def test_avg_price(category_technics):
+    assert category_technics.avg_price() == 561000
     category = Category("sus", "atata", [])
     assert category.avg_price() == 0
 
@@ -101,8 +105,10 @@ def test_product_add_product(product):
     assert new_product.price == 1600.0
     assert new_product.quantity == 6
 
-    with pytest.raises(ValueError):
-        product.add_product({"name": "Наушники", "description": "Норм звук", "price": 1600.0, "quantity": -4})
+    # with pytest.raises(ZeroProductQuantity):
+    #     product.add_product({"name": "Наушники", "description": "Норм звук", "price": 1600.0, "quantity": -4})
+    assert product.add_product(
+        {"name": "Наушники", "description": "Норм звук", "price": 1600.0, "quantity": -4}) is None
 
 
 def test_order(product):
@@ -110,6 +116,8 @@ def test_order(product):
     assert my_order.product == product
     assert my_order.quantity == 3
     assert my_order.final_price == 146970.00
+
+    empty_order = Order(product, 0)
 
 
 def test_product_add(product):

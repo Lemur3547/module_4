@@ -41,11 +41,15 @@ class Category(AbstractCategory):
         :param product: Добавляемый товар
         :return: Список товаров включающий новый товар
         """
-        if isinstance(product, Product):
-            if product not in self._products:
-                self._products.append(product)
+        try:
+            if isinstance(product, Product):
+                if product not in self._products:
+                    self._products.append(product)
+                return self._products
+            raise ValueError("Добавляемое значение не является экземпляром класса Product или его наследником")
+        except ValueError as e:
+            print(e)
             return self._products
-        raise ValueError("Добавляемое значение не является экземпляром класса Product или его наследником")
 
     @property
     def get_products(self):
@@ -61,7 +65,7 @@ class Category(AbstractCategory):
 
     def avg_price(self):
         try:
-            avg_price = round(sum([i._price for i in self._products])/len(self._products), 2)
+            avg_price = round(sum([i._price for i in self._products]) / len(self._products), 2)
             return avg_price
         except ZeroDivisionError:
             return 0
@@ -69,9 +73,20 @@ class Category(AbstractCategory):
 
 class Order(AbstractCategory):
     def __init__(self, product, quantity):
-        self.product = product
-        self.quantity = quantity
-        self.final_price = product._price * quantity
+        try:
+            if quantity > 0:
+                self.product = product
+                self.quantity = quantity
+                self.final_price = product._price * quantity
+            else:
+                raise ZeroProductQuantity
+        except ZeroProductQuantity as e:
+            print(e)
+        else:
+            print("Товар добавлен")
+        finally:
+            print("Обработка товара завершена")
+
 
 
 class AbstractProduct(ABC):
@@ -120,15 +135,22 @@ class Product(AbstractProduct, MixinLog):
     @classmethod
     def add_product(cls, product):
         pr = cls(**product)
-        if pr.quantity > 0:
-            for i in cls.__products:
-                if i.name == pr.name:
-                    i.quantity += pr.quantity
-                    i._price = max(i._price, pr._price)
-                    return i
-            cls.__products.append(pr)
-            return pr
-        raise ValueError("Невозможно добавить товар, количество которого менее 1")
+        try:
+            if pr.quantity > 0:
+                for i in cls.__products:
+                    if i.name == pr.name:
+                        i.quantity += pr.quantity
+                        i._price = max(i._price, pr._price)
+                        return i
+                cls.__products.append(pr)
+                return pr
+            raise ZeroProductQuantity()
+        except ZeroProductQuantity as e:
+            print(e)
+        else:
+            print("Товар добавлен")
+        finally:
+            print("Обработка товара завершена")
 
     @property
     def price(self):
@@ -170,6 +192,14 @@ class Grass(Product, MixinLog):
         self.germination_time = germination_time
         self.color = color
         print(repr(self))
+
+
+class ZeroProductQuantity(Exception):
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else "Количество товара не может быть менее 1"
+
+    def __str__(self):
+        return self.message
 
 
 class ProductIteration:

@@ -5,18 +5,18 @@ products_list = read_json()
 
 # print(str(products_list[1]))
 #
-products_list[1].add_product(Product.add_product({"name": "Советский", "description": "Может быть работает",
-                                                  "price": 1500.0, "quantity": 2}))
-products_list[1].add_product(Product.add_product({"name": "новый", "description": "Может быть работает",
-                                                  "price": 2000.0, "quantity": 1}))
-products_list[1].add_product(Product.add_product({"name": "Советский", "description": "Может быть работает",
-                                                  "price": 1100.0, "quantity": 3}))
-products_list[1].add_product(Product.add_product({"name": "новый", "description": "Может быть работает",
-                                                  "price": 1500.0, "quantity": 1}))
-for i in products_list[1].get_products:
-    print(i)
-products_list.append(Category("sus", "atata", []))
-print(products_list[2].avg_price())
+# products_list[1].add_product(Product.add_product({"name": "Советский", "description": "Может быть работает",
+#                                                   "price": 1500.0, "quantity": -2}))
+# products_list[1].add_product(Product.add_product({"name": "новый", "description": "Может быть работает",
+#                                                   "price": 2000.0, "quantity": 1}))
+# products_list[1].add_product(Product.add_product({"name": "Советский", "description": "Может быть работает",
+#                                                   "price": 1100.0, "quantity": 3}))
+# products_list[1].add_product(Product.add_product({"name": "новый", "description": "Может быть работает",
+#                                                   "price": 1500.0, "quantity": 1}))
+# # for i in products_list[1].get_products:
+#     print(i)
+# products_list.append(Category("sus", "atata", []))
+# print(products_list[2].avg_price())
 #
 # print(len(products_list[1]))
 #
@@ -53,8 +53,8 @@ print(products_list[2].avg_price())
 # print(repr(smartphone))
 # print(repr(grass))
 
-# new_order = Order(products_list[0]._products[1], 3)
-#
+new_order = Order(products_list[0]._products[1], -2)
+
 # print(new_order.product)
 # print(new_order.quantity)
 # print(new_order.final_price)
